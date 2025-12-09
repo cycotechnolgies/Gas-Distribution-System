@@ -18,7 +18,7 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('suppliers', SupplierController::class);
 });
 
-Route::middleware(['auth','role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::resource('gas-types', GasTypeController::class)->except(['create','edit','show']);
 });
 
