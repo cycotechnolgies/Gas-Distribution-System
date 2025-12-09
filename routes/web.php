@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GasTypeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,10 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function() {
     Route::resource('suppliers', SupplierController::class);
+});
+
+Route::middleware(['auth','role:admin'])->group(function () {
+    Route::resource('gas-types', GasTypeController::class)->except(['create','edit','show']);
 });
 
 require __DIR__.'/auth.php';

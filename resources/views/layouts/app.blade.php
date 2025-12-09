@@ -6,6 +6,8 @@
 
     <title>Gas LK</title>
 
+    <script src="//unpkg.com/alpinejs" defer></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100">
