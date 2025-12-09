@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\GasType;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GasTypeController extends Controller
 {
@@ -43,4 +45,53 @@ class GasTypeController extends Controller
 
         return back()->with('success', 'Gas type deleted successfully.');
     }
+
+    public function show(GasType $gasType)
+    {
+        $suppliers = Supplier::all();
+
+        $gasType->load('suppliers');
+
+        return view('gas-types.show', compact('gasType', 'suppliers'));
+    }
+
+    // Add / Update Supplier Rate
+    public function saveSupplierRate(Request $request, GasType $gasType)
+    {
+        $request->validate([
+            'supplier_id' => 'required',
+            'rate' => 'required|numeric|min:0'
+        ]);
+
+        $gasType->suppliers()->syncWithoutDetaching([
+            $request->supplier_id => ['rate' => $request->rate]
+        ]);
+
+        return back()->with('success', 'Supplier rate saved.');
+    }
+
+    // Remove Supplier Rate
+    public function removeSupplier(GasType $gasType, Supplier $supplier)
+    {
+        $gasType->suppliers()->detach($supplier->id);
+
+        return back()->with('success', 'Supplier removed.');
+    }
+
+    public function getSupplierRate(Request $request)
+    {
+        $request->validate([
+            'gas_type_id' => 'required',
+            'supplier_id' => 'required'
+        ]);
+        $rate = DB::table('gas_type_supplier')
+            ->where('gas_type_id', $request->gas_type_id)
+            ->where('supplier_id', $request->supplier_id)
+            ->value('rate');
+
+        return response()->json([
+            'rate' => $rate ?? 0
+        ]);
+    }
+
 }
