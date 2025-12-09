@@ -36,9 +36,14 @@
              x-data="{ gasData: {id: {{ $g->id }}, name: '{{ $g->name }}', price: '{{ $g->price }}'} }">
 
             <h3 class="text-xl font-bold text-gray-900">{{ $g->name }}</h3>
-            <p class="text-gray-600 mt-2">Price: <span class="font-semibold">Rs. {{ $g->price }}</span></p>
-
+            
             <div class="flex gap-2 mt-5">
+                <button 
+                    @click="window.location.href = '/gas-types/{{ $g->id }}'"
+                    class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-700 py-2 rounded-lg">
+                    view
+                </button>
+
                 <button 
                     @click="gas = gasData; openModal = true"
                     class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-700 py-2 rounded-lg">

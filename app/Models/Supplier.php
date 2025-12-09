@@ -15,4 +15,12 @@ class Supplier extends Model
         'phone',
         'email'
     ];
+
+    public function gasTypes()
+    {
+        return $this->belongsToMany(\App\Models\GasType::class)
+            ->withPivot('rate')
+            ->withTimestamps();
+    }
+
 }

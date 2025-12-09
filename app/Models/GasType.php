@@ -13,4 +13,12 @@ class GasType extends Model
         'name',
         'price'
     ];
+
+    public function suppliers()
+    {
+        return $this->belongsToMany(\App\Models\Supplier::class)
+            ->withPivot('rate')
+            ->withTimestamps();
+    }
+
 }
