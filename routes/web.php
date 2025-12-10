@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GasTypeController;
+use App\Http\Controllers\GrnController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,5 +40,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/purchase-orders/{po}/status/{status}', [PurchaseOrderController::class, 'updateStatus'])
         ->name('purchase-orders.status');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('grns', [GrnController::class,'index'])->name('grns.index');
+    Route::post('grns', [GrnController::class,'store'])->name('grns.store');
+    Route::delete('grns/{grn}', [GrnController::class,'destroy'])->name('grns.destroy');
+
+    Route::post('grns/{grn}/approve', [GrnController::class,'approve'])->name('grns.approve');
+
+    Route::get('api/po-items/{po}', [GrnController::class,'getPoItems']);
+});
+
+Route::get('/stocks', [StockController::class,'index']);
+
+
 
 require __DIR__.'/auth.php';
