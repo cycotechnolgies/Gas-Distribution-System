@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GasTypeController;
 use App\Http\Controllers\GrnController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\StockController;
@@ -52,6 +54,21 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/stocks', [StockController::class,'index']);
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/customers', [CustomerController::class,'index'])->name('customers.index');
+    Route::post('/customers', [CustomerController::class,'store'])->name('customers.store');
+    Route::put('/customers/{customer}', [CustomerController::class,'update'])->name('customers.update');
+    Route::delete('/customers/{customer}', [CustomerController::class,'destroy'])->name('customers.destroy');
+    Route::get('/customers/{customer}', [CustomerController::class,'show'])->name('customers.show');
+
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('orders', OrderController::class)->except(['create','edit']);
+    Route::post('orders/{order}/status/{status}', [OrderController::class,'updateStatus'])->name('orders.status');
+});
 
 
 
