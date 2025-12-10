@@ -32,6 +32,7 @@
                 <a href="/gas-types" class="px-4 py-2 rounded hover:bg-indigo-100">Gas Types</a>
                 <a href="/purchase-orders" class="px-4 py-2 rounded hover:bg-indigo-100">Purchase Orders</a>
                 <a href="/grns" class="px-4 py-2 rounded hover:bg-indigo-100">GRNs</a>
+                <a href="/stocks" class="px-4 py-2 rounded hover:bg-indigo-100">Stocks</a>
                 <a href="/customers" class="px-4 py-2 rounded hover:bg-indigo-100">Customers</a>
                 <a href="/orders" class="px-4 py-2 rounded hover:bg-indigo-100">Orders</a>
                 <a href="/routes" class="px-4 py-2 rounded hover:bg-indigo-100">Delivery Routes</a>
