@@ -21,4 +21,8 @@ class GasType extends Model
             ->withTimestamps();
     }
 
+    public function stock()
+    {
+        return $this->hasOne(\App\Models\Stock::class, 'gas_type_id');
+    }
 }

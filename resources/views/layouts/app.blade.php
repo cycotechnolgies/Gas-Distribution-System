@@ -92,4 +92,7 @@
             overlay.classList.add('hidden');
         });
     </script>
+
+    @stack('scripts')
 </body>
+</html>
