@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeliveryRouteController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\GasTypeController;
 use App\Http\Controllers\GrnController;
 use App\Http\Controllers\OrderController;
@@ -9,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -70,6 +74,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('orders/{order}/status/{status}', [OrderController::class,'updateStatus'])->name('orders.status');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/drivers', DriverController::class);
+    Route::resource('/assistants', AssistantController::class);
+    Route::resource('/vehicles', VehicleController::class);
+});
 
+Route::resource('routes', DeliveryRouteController::class);
 
 require __DIR__.'/auth.php';

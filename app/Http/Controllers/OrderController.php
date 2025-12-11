@@ -14,7 +14,7 @@ class OrderController extends Controller
         $orders = Order::with(['customer','deliveryRoute'])->latest()->paginate(12);
         $customers = Customer::all();
         $gasTypes = GasType::all();
-        // $routes = DeliveryRoute::all();
+        $routes = DeliveryRoute::all();
 
         // Preload stocks for convenience (optional)
         $stocks = DB::table('stocks')->select('gas_type_id','full_qty')->get()->pluck('full_qty','gas_type_id');

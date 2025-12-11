@@ -36,7 +36,8 @@
                 <a href="/customers" class="px-4 py-2 rounded hover:bg-indigo-100">Customers</a>
                 <a href="/orders" class="px-4 py-2 rounded hover:bg-indigo-100">Orders</a>
                 <a href="/routes" class="px-4 py-2 rounded hover:bg-indigo-100">Delivery Routes</a>
-                <a href="/drivers" class="px-4 py-2 rounded hover:bg-indigo-100">Staff</a>
+                <a href="/drivers" class="px-4 py-2 rounded hover:bg-indigo-100">Drivers</a>
+                <a href="/assistants" class="px-4 py-2 rounded hover:bg-indigo-100">Assistant</a>
                 <a href="/vehicles" class="px-4 py-2 rounded hover:bg-indigo-100">Vehicles</a>
             </nav>
         </aside>
