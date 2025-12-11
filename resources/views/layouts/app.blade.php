@@ -34,8 +34,9 @@
                 <a href="/grns" class="px-4 py-2 rounded hover:bg-indigo-100">GRNs</a>
                 <a href="/stocks" class="px-4 py-2 rounded hover:bg-indigo-100">Stocks</a>
                 <a href="/customers" class="px-4 py-2 rounded hover:bg-indigo-100">Customers</a>
+                <a href="/supplier-payments" class="px-4 py-2 rounded hover:bg-indigo-100">Supplier Payments</a>
                 <a href="/orders" class="px-4 py-2 rounded hover:bg-indigo-100">Orders</a>
-                <a href="/routes" class="px-4 py-2 rounded hover:bg-indigo-100">Delivery Routes</a>
+                <a href="/delivery-routes" class="px-4 py-2 rounded hover:bg-indigo-100">Delivery Routes</a>
                 <a href="/drivers" class="px-4 py-2 rounded hover:bg-indigo-100">Drivers</a>
                 <a href="/assistants" class="px-4 py-2 rounded hover:bg-indigo-100">Assistant</a>
                 <a href="/vehicles" class="px-4 py-2 rounded hover:bg-indigo-100">Vehicles</a>

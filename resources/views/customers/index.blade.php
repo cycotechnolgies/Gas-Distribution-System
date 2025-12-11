@@ -1,127 +1,107 @@
 @extends('layouts.app')
 
+@section('title', 'Customers')
+
 @section('content')
-
-<div 
-    x-data="{
-        openModal:false,
-        customer:{ id:null, name:'', phone:'', email:'', address:'', nic:'', city:'', customer_type:'retail', credit_limit:0 }
-    }"
-    class="space-y-8 pb-8">
-
-    <!-- Header -->
-    <div class="flex justify-between items-center">
-        <h1 class="text-4xl font-bold text-gray-900">Customers</h1>
-        <button 
-            @click="customer={id:null, name:'', phone:'', email:'', address:'', nic:'', city:'', customer_type:'retail', credit_limit:0}; openModal=true"
-            class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow">
-            + Add Customer
-        </button>
-    </div>
-
-    <hr>
-
-    <!-- Success -->
-    @if(session('success'))
-        <div class="bg-green-100 text-green-700 p-3 rounded">{{ session('success') }}</div>
-    @endif
-
-    <!-- Customers Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach($customers as $c)
-        <div 
-            class="bg-white shadow rounded-xl p-5 border"
-            x-data="{ data:{ id:{{ $c->id }}, name:'{{ $c->name }}', phone:'{{ $c->phone }}', email:'{{ $c->email }}', address:'{{ $c->address }}', nic:'{{ $c->nic }}', city:'{{ $c->city }}', customer_type:'{{ $c->customer_type }}', credit_limit:{{ $c->credit_limit }} } }">
-
-            <div class="border-b pb-3 mb-3">
-                <h3 class="text-xl font-semibold">{{ $c->name }}</h3>
-                <p class="text-gray-600 text-sm">{{ $c->city }}</p>
-            </div>
-
-            <div class="text-sm text-gray-700 space-y-1">
-                <p><strong>Phone:</strong> {{ $c->phone }}</p>
-                <p><strong>Email:</strong> {{ $c->email }}</p>
-                <p><strong>Type:</strong> {{ ucfirst($c->customer_type) }}</p>
-            </div>
-
-            <div class="flex gap-2 mt-4">
-                <a 
-                    href="{{ route('customers.show', $c->id) }}"
-                    class="flex-1 bg-blue-100 text-blue-700 py-2 rounded text-center text-sm">
-                    View
-                </a>
-
-                <button 
-                    @click="customer = data; openModal = true"
-                    class="flex-1 bg-amber-100 text-amber-700 py-2 rounded text-sm">
-                    Edit
-                </button>
-
-                <form method="POST" action="{{ route('customers.destroy', $c->id) }}" class="flex-1">
-                    @csrf @method('DELETE')
-                    <button onclick="return confirm('Delete customer?')"
-                        class="w-full bg-red-100 text-red-700 py-2 rounded text-sm">
-                        Delete
-                    </button>
-                </form>
-            </div>
+<div class="py-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8 flex justify-between items-center">
+            <h1 class="text-4xl font-bold text-gray-900">Customer Management</h1>
+            <a href="{{ route('customers.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+                + Add New Customer
+            </a>
         </div>
-        @endforeach
-    </div>
 
-    <div class="mt-6">{{ $customers->links() }}</div>
+        <!-- Success/Error Messages -->
+        @if (session('success'))
+            <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-4 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-4 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
 
-    <!-- Modal -->
-    <div 
-        x-show="openModal" 
-        class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-        x-cloak>
+        <!-- Customers Table -->
+        <div class="bg-white overflow-hidden shadow-md rounded-lg">
+            @if($customers->count() > 0)
+                <table class="w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Phone</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">City</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Credit Limit</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Outstanding</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach($customers as $customer)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">
+                                    <a href="{{ route('customers.show', $customer) }}" class="text-blue-600 hover:text-blue-800 font-medium">
+                                        {{ $customer->name }}
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                        {{ $customer->customer_type === 'Dealer' ? 'bg-blue-100 text-blue-800' : '' }}
+                                        {{ $customer->customer_type === 'Commercial' ? 'bg-purple-100 text-purple-800' : '' }}
+                                        {{ $customer->customer_type === 'Individual' ? 'bg-green-100 text-green-800' : '' }}">
+                                        {{ $customer->customer_type }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-600">{{ $customer->phone ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-600">{{ $customer->city ?? '-' }}</td>
+                                <td class="px-6 py-4 text-sm font-medium">
+                                    LKR {{ number_format($customer->credit_limit ?? 0, 2) }}
+                                </td>
+                                <td class="px-6 py-4 text-sm font-medium">
+                                    <span class="px-3 py-1 rounded-full 
+                                        {{ $customer->getOutstandingBalance() > 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
+                                        LKR {{ number_format($customer->getOutstandingBalance(), 2) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium
+                                        {{ $customer->status === 'Active' ? 'bg-green-100 text-green-800' : '' }}
+                                        {{ $customer->status === 'Inactive' ? 'bg-gray-100 text-gray-800' : '' }}
+                                        {{ $customer->status === 'Suspended' ? 'bg-red-100 text-red-800' : '' }}">
+                                        {{ $customer->status }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm space-x-2">
+                                    <a href="{{ route('customers.show', $customer) }}" class="text-blue-600 hover:text-blue-800">View</a>
+                                    <a href="{{ route('customers.edit', $customer) }}" class="text-orange-600 hover:text-orange-800">Edit</a>
+                                    <a href="{{ route('customers.pricing', $customer) }}" class="text-purple-600 hover:text-purple-800">Pricing</a>
+                                    <a href="{{ route('customers.cylinders', $customer) }}" class="text-teal-600 hover:text-teal-800">Cylinders</a>
+                                    <form action="{{ route('customers.destroy', $customer) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-800">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full p-8">
-
-            <h2 class="text-2xl font-bold mb-4" 
-                x-text="customer.id ? 'Edit Customer' : 'Add Customer'">
-            </h2>
-
-            <form :action="customer.id ? `/customers/${customer.id}` : '/customers'" method="POST">
-                @csrf
-                <template x-if="customer.id">
-                    <input type="hidden" name="_method" value="PUT">
-                </template>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <x-form.input name="name" label="Name" x-model="customer.name" required />
-                    <x-form.input name="phone" label="Phone" x-model="customer.phone" />
-                    <x-form.input name="email" label="Email" type="email" x-model="customer.email" />
-                    <x-form.input name="nic" label="NIC" x-model="customer.nic" />
-                    <x-form.input name="city" label="City" x-model="customer.city" />
-                    <x-form.input name="address" label="Address" x-model="customer.address"/>
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    {{ $customers->links() }}
                 </div>
-
-
-                <div class="grid grid-cols-2 gap-4 mt-4">
-                    <select 
-                        name="customer_type"
-                        x-model="customer.customer_type"
-                        class="border p-2 rounded w-full">
-                        <option value="retail">Retail</option>
-                        <option value="wholesale">Wholesale</option>
-                    </select>
-
-                    <x-form.input name="credit_limit" type="number" label="Credit Limit" x-model="customer.credit_limit" />
+            @else
+                <div class="text-center py-12">
+                    <p class="text-gray-500 text-lg">No customers found. Start by adding a new customer.</p>
                 </div>
-
-                <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" @click="openModal=false" class="px-4 py-2 bg-gray-200 rounded">
-                        Cancel
-                    </button>
-                    <button class="px-6 py-2 bg-blue-600 text-white rounded">Save</button>
-                </div>
-
-            </form>
+            @endif
         </div>
     </div>
-
 </div>
-
 @endsection

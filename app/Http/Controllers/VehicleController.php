@@ -2,29 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assistant;
-use App\Models\Driver;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class VehicleController extends Controller
 {
-
     /**
-     * Display a listing of the resource.
+     * Display a listing of vehicles with statistics
      */
     public function index()
     {
-        return view('vehicles.index', [
-            'vehicles' => Vehicle::with('driver')->paginate(12),
-            'drivers' => Driver::orderBy('name')->get(),
-            'assistants' => Assistant::orderBy('name')->get(), // if needed
-        ]);
+        $vehicles = Vehicle::orderBy('vehicle_number')->paginate(12);
+
+        // Add current route and metrics to each vehicle
+        foreach ($vehicles as $vehicle) {
+            $vehicle->currentRoute = $vehicle->getAssignedRoute();
+            $vehicle->metrics = $vehicle->getPerformanceMetrics();
+            $vehicle->healthStatus = $vehicle->getHealthStatus();
+        }
+
+        $stats = Vehicle::getStatistics();
+        $needsAttention = Vehicle::getNeedsAttention();
+        $drivers = \App\Models\Driver::all();
+
+        return view('vehicles.index', compact('vehicles', 'stats', 'needsAttention', 'drivers'));
     }
 
-
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new vehicle
      */
     public function create()
     {
@@ -32,25 +38,53 @@ class VehicleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created vehicle in database
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $validated = $request->validate([
             'vehicle_number' => 'required|string|max:50|unique:vehicles,vehicle_number',
-            'model'          => 'nullable|string|max:191',
-            'capacity'       => 'required|integer|min:0',
-            'status'         => 'required|in:available,maintenance,on_route',
-            'notes'          => 'nullable|string',
+            'model' => 'nullable|string|max:191',
+            'type' => 'nullable|string|max:100',
+            'capacity' => 'required|integer|min:0',
+            'purchase_date' => 'nullable|date|before_or_equal:today',
+            'registration_expiry' => 'nullable|date|after:today',
+            'fuel_consumption' => 'nullable|numeric|min:0',
+            'status' => 'required|in:active,inactive,maintenance',
+            'notes' => 'nullable|string',
         ]);
 
-        Vehicle::create($data);
+        Vehicle::create($validated);
 
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle created.');
+        return redirect()->route('vehicles.index')->with('success', 'Vehicle created successfully.');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified vehicle with detailed information
+     */
+    public function show(Vehicle $vehicle)
+    {
+        $vehicle->load('deliveryRoutes');
+        $metrics = $vehicle->getPerformanceMetrics();
+        $currentRoute = $vehicle->getAssignedRoute();
+        $completedRoutes = $vehicle->getCompletedRoutes()->count();
+        $maintenanceStatus = $vehicle->getMaintenanceStatus();
+        $healthStatus = $vehicle->getHealthStatus();
+        $ageYears = $vehicle->getAgeYears();
+
+        return view('vehicles.show', compact(
+            'vehicle',
+            'metrics',
+            'currentRoute',
+            'completedRoutes',
+            'maintenanceStatus',
+            'healthStatus',
+            'ageYears'
+        ));
+    }
+
+    /**
+     * Show the form for editing the specified vehicle
      */
     public function edit(Vehicle $vehicle)
     {
@@ -58,36 +92,85 @@ class VehicleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified vehicle in database
      */
     public function update(Request $request, Vehicle $vehicle)
     {
-        $data = $request->validate([
-            // ignore unique on current vehicle id
+        $validated = $request->validate([
             'vehicle_number' => 'required|string|max:50|unique:vehicles,vehicle_number,' . $vehicle->id,
-            'model'          => 'nullable|string|max:191',
-            'capacity'       => 'required|integer|min:0',
-            'status'         => 'required|in:available,maintenance,on_route',
-            'notes'          => 'nullable|string',
+            'model' => 'nullable|string|max:191',
+            'type' => 'nullable|string|max:100',
+            'capacity' => 'required|integer|min:0',
+            'purchase_date' => 'nullable|date|before_or_equal:today',
+            'registration_expiry' => 'nullable|date|after:today',
+            'fuel_consumption' => 'nullable|numeric|min:0',
+            'status' => 'required|in:active,inactive,maintenance',
+            'notes' => 'nullable|string',
         ]);
 
-        $vehicle->update($data);
+        $vehicle->update($validated);
 
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle updated.');
+        return redirect()->route('vehicles.show', $vehicle)->with('success', 'Vehicle updated successfully.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified vehicle with validation
      */
     public function destroy(Vehicle $vehicle)
     {
-        // Optional: prevent delete if assigned to routes
-        if (method_exists($vehicle, 'deliveryRoutes') && $vehicle->deliveryRoutes()->count() > 0) {
-            return redirect()->route('vehicles.index')->with('error', 'Cannot delete vehicle assigned to delivery routes.');
+        if (!$vehicle->canBeDeleted()) {
+            return back()->with('error', 'Cannot delete vehicle with active or in-progress routes.');
         }
 
+        $vehicleNumber = $vehicle->vehicle_number;
         $vehicle->delete();
 
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle deleted.');
+        return redirect()->route('vehicles.index')->with('success', "Vehicle '{$vehicleNumber}' deleted successfully.");
+    }
+
+    /**
+     * Toggle vehicle status
+     */
+    public function toggleStatus(Vehicle $vehicle)
+    {
+        $vehicle->toggleStatus();
+        $status = $vehicle->status;
+
+        return back()->with('success', "Vehicle marked as {$status}.");
+    }
+
+    /**
+     * Mark vehicle for maintenance
+     */
+    public function markMaintenance(Request $request, Vehicle $vehicle)
+    {
+        $validated = $request->validate([
+            'next_due_date' => 'required|date|after:today',
+        ]);
+
+        $vehicle->markMaintenance(Carbon::parse($validated['next_due_date']));
+
+        return back()->with('success', 'Vehicle marked for maintenance.');
+    }
+
+    /**
+     * Mark vehicle as active after maintenance
+     */
+    public function markActiveAfterMaintenance(Vehicle $vehicle)
+    {
+        $vehicle->markActiveAfterMaintenance();
+
+        return back()->with('success', 'Vehicle marked as active after maintenance.');
+    }
+
+    /**
+     * Display vehicle maintenance report
+     */
+    public function maintenanceReport(Vehicle $vehicle)
+    {
+        $maintenanceStatus = $vehicle->getMaintenanceStatus();
+        $completedRoutes = $vehicle->getCompletedRoutes();
+
+        return view('vehicles.maintenance', compact('vehicle', 'maintenanceStatus', 'completedRoutes'));
     }
 }

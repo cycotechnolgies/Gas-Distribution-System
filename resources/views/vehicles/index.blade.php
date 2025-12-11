@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div x-data="{ openModal: false, vehicle: { id: null, vehicle_number: '', type: '', capacity: 0, driver_id: null, status: 'available', notes: '' }, drivers: @json($drivers->map(function($d){ return ['id'=>$d->id,'name'=>$d->name]; })) }" class="space-y-8 pb-8">
+<div x-data="vehicleManager()" class="space-y-8 pb-8">
+    <script>
+        function vehicleManager() {
+            return {
+                openModal: false,
+                vehicle: { id: null, vehicle_number: '', type: '', capacity: 0, driver_id: null, status: 'active', notes: '' },
+                drivers: @json($drivers->map(fn($d) => ['id' => $d->id, 'name' => $d->name])),
+            };
+        }
+    </script>
 
     <div class="pt-2">
         <div class="flex flex-col gap-8 md:flex-row justify-between items-start">
@@ -98,8 +107,8 @@
     @endif
 
     <!-- Modal -->
-    <div x-show="openModal" @keydown.escape="openModal=false" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" style="display: none;">
-        <div @click.away="openModal=false" class="bg-white rounded-xl w-full max-w-2xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div x-show="openModal" x-transition @keydown.escape="openModal=false" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div @click.away="openModal=false" class="bg-white rounded-xl w-full max-w-2xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto" x-transition>
             <div class="mb-6 sticky top-0 bg-white">
                 <h2 class="text-3xl font-bold text-gray-900" x-text="vehicle.id ? 'Edit Vehicle' : 'Add New Vehicle'"></h2>
                 <p class="text-gray-600 text-sm mt-2" x-text="vehicle.id ? 'Update vehicle details' : 'Create a new vehicle'"></p>
@@ -113,15 +122,27 @@
 
                 <div class="space-y-5 mb-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="vehicle_number" label="Vehicle Number" placeholder="Registration / plate" required x-model="vehicle.vehicle_number" />
-                        <x-form.input name="type" label="Type (Truck, Van, Bike)" placeholder="Vehicle type" x-model="vehicle.type" />
+                        <div class="space-y-2">
+                            <label for="vehicle_number" class="block text-sm font-semibold text-gray-700">Vehicle Number <span class="text-red-500">*</span></label>
+                            <input type="text" name="vehicle_number" id="vehicle_number" placeholder="Registration / plate" required x-model="vehicle.vehicle_number" 
+                                   class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" />
+                        </div>
+                        <div class="space-y-2">
+                            <label for="type" class="block text-sm font-semibold text-gray-700">Type</label>
+                            <input type="text" name="type" id="type" placeholder="Vehicle type (Truck, Van, Bike)" x-model="vehicle.type" 
+                                   class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" />
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <x-form.input name="capacity" type="number" label="Capacity (cylinders)" placeholder="e.g. 20" required x-model="vehicle.capacity" />
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Driver</label>
-                            <select name="driver_id" x-model="vehicle.driver_id" class="mt-1 w-full rounded border-gray-300">
+                        <div class="space-y-2">
+                            <label for="capacity" class="block text-sm font-semibold text-gray-700">Capacity (cylinders) <span class="text-red-500">*</span></label>
+                            <input type="number" name="capacity" id="capacity" placeholder="e.g. 20" required x-model="vehicle.capacity" 
+                                   class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200" />
+                        </div>
+                        <div class="space-y-2">
+                            <label for="driver_id" class="block text-sm font-semibold text-gray-700">Driver</label>
+                            <select name="driver_id" id="driver_id" x-model="vehicle.driver_id" class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
                                 <option value="">— Unassigned —</option>
                                 <template x-for="d in drivers" :key="d.id">
                                     <option :value="d.id" x-text="d.name"></option>
@@ -130,24 +151,25 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Status</label>
-                        <select name="status" x-model="vehicle.status" class="mt-1 w-full rounded border-gray-300">
-                            <option value="available">Available</option>
+                    <div class="space-y-2">
+                        <label for="status" class="block text-sm font-semibold text-gray-700">Status</label>
+                        <select name="status" id="status" x-model="vehicle.status" class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
                             <option value="maintenance">Maintenance</option>
-                            <option value="on_route">On Route</option>
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Notes</label>
-                        <input name="notes" x-model="vehicle.notes" class="mt-1 w-full rounded border-gray-300" placeholder="Optional notes" />
+                    <div class="space-y-2">
+                        <label for="notes" class="block text-sm font-semibold text-gray-700">Notes</label>
+                        <textarea name="notes" id="notes" x-model="vehicle.notes" placeholder="Optional notes" rows="3"
+                                  class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"></textarea>
                     </div>
                 </div>
 
                 <div class="flex justify-end gap-3 pt-6 mt-6 border-t border-gray-200 sticky bottom-0 bg-white">
-                    <x-form.button type="button" variant="outline" size="md" @click="openModal=false">Cancel</x-form.button>
-                    <x-form.button type="submit" variant="primary" size="md">Save Vehicle</x-form.button>
+                    <button type="button" @click="openModal=false" class="px-6 py-3 rounded-lg border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-50 transition-all duration-200">Cancel</button>
+                    <button type="submit" class="px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-all duration-200">Save Vehicle</button>
                 </div>
             </form>
         </div>
