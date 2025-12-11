@@ -1,38 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h3 class="text-gray-500">Suppliers</h3>
-        <h1 class="text-3xl font-bold mt-2">{{ $stats['suppliers'] }}</h1>
+<div class="grid grid-cols-1 gap-3 md:grid-cols-5 md:gap-6 mb-8">
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow">
+        <h3 class="text-gray-500 text-xs md:text-base">Suppliers</h3>
+        <h1 class="text-2xl md:text-3xl font-bold mt-2">{{ $stats['suppliers'] }}</h1>
     </div>
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h3 class="text-gray-500">Customers</h3>
-        <h1 class="text-3xl font-bold mt-2">{{ $stats['customers'] }}</h1>
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow">
+        <h3 class="text-gray-500 text-xs md:text-base">Customers</h3>
+        <h1 class="text-2xl md:text-3xl font-bold mt-2">{{ $stats['customers'] }}</h1>
     </div>
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h3 class="text-gray-500">Pending Orders</h3>
-        <h1 class="text-3xl font-bold mt-2">{{ $stats['pending_orders'] }}</h1>
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow">
+        <h3 class="text-gray-500 text-xs md:text-base">Pending Orders</h3>
+        <h1 class="text-2xl md:text-3xl font-bold mt-2">{{ $stats['pending_orders'] }}</h1>
     </div>
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h3 class="text-gray-500">Stock Items</h3>
-        <h1 class="text-3xl font-bold mt-2">{{ $stats['stock_items'] }}</h1>
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow">
+        <h3 class="text-gray-500 text-xs md:text-base">Stock Items</h3>
+        <h1 class="text-2xl md:text-3xl font-bold mt-2">{{ $stats['stock_items'] }}</h1>
     </div>
-    <div class="bg-white p-6 rounded-xl shadow">
-        <h3 class="text-gray-500">Routes Today</h3>
-        <h1 class="text-3xl font-bold mt-2">{{ $stats['routes_today'] }}</h1>
+    <div class="bg-white p-4 md:p-6 rounded-xl shadow">
+        <h3 class="text-gray-500 text-xs md:text-base">Routes Today</h3>
+        <h1 class="text-2xl md:text-3xl font-bold mt-2">{{ $stats['routes_today'] }}</h1>
     </div>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+<div class="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-6 mt-8">
     <!-- Orders Line Chart by Status -->
-    <div class="bg-white p-6 rounded shadow">
-        <h2 class="text-lg font-semibold mb-4">Orders per Month by Status</h2>
+    <div class="bg-white p-4 md:p-6 rounded shadow">
+        <h2 class="text-base md:text-lg font-semibold mb-4">Orders per Month by Status</h2>
         <canvas id="ordersLineChart" height="120"></canvas>
     </div>
     <!-- Stock Bar Chart by Gas Type -->
-    <div class="bg-white p-6 rounded shadow">
-        <h2 class="text-lg font-semibold mb-4">Stock by Gas Type</h2>
+    <div class="bg-white p-4 md:p-6 rounded shadow">
+        <h2 class="text-base md:text-lg font-semibold mb-4">Stock by Gas Type</h2>
         <canvas id="stockBarChart" height="120"></canvas>
     </div>
 </div>

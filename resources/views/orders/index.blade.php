@@ -26,67 +26,67 @@
         @endif
 
         <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-6 md:gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow p-3 md:p-4 border-l-4 border-blue-500">
                 <p class="text-xs text-gray-600 uppercase font-semibold">Total Orders</p>
-                <p class="text-2xl font-bold text-blue-600">{{ $stats['total_orders'] }}</p>
+                <p class="text-xl md:text-2xl font-bold text-blue-600">{{ $stats['total_orders'] }}</p>
             </div>
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+            <div class="bg-white rounded-lg shadow p-3 md:p-4 border-l-4 border-yellow-500">
                 <p class="text-xs text-gray-600 uppercase font-semibold">Pending</p>
-                <p class="text-2xl font-bold text-yellow-600">{{ $stats['pending'] }}</p>
+                <p class="text-xl md:text-2xl font-bold text-yellow-600">{{ $stats['pending'] }}</p>
             </div>
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+            <div class="bg-white rounded-lg shadow p-3 md:p-4 border-l-4 border-purple-500">
                 <p class="text-xs text-gray-600 uppercase font-semibold">Loaded</p>
-                <p class="text-2xl font-bold text-purple-600">{{ $stats['loaded'] }}</p>
+                <p class="text-xl md:text-2xl font-bold text-purple-600">{{ $stats['loaded'] }}</p>
             </div>
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500">
+            <div class="bg-white rounded-lg shadow p-3 md:p-4 border-l-4 border-orange-500">
                 <p class="text-xs text-gray-600 uppercase font-semibold">Delivered</p>
-                <p class="text-2xl font-bold text-orange-600">{{ $stats['delivered'] }}</p>
+                <p class="text-xl md:text-2xl font-bold text-orange-600">{{ $stats['delivered'] }}</p>
             </div>
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+            <div class="bg-white rounded-lg shadow p-3 md:p-4 border-l-4 border-green-500">
                 <p class="text-xs text-gray-600 uppercase font-semibold">Completed</p>
-                <p class="text-2xl font-bold text-green-600">{{ $stats['completed'] }}</p>
+                <p class="text-xl md:text-2xl font-bold text-green-600">{{ $stats['completed'] }}</p>
             </div>
-            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-red-500">
+            <div class="bg-white rounded-lg shadow p-3 md:p-4 border-l-4 border-red-500">
                 <p class="text-xs text-gray-600 uppercase font-semibold">Urgent</p>
-                <p class="text-2xl font-bold text-red-600">{{ $stats['urgent'] }}</p>
+                <p class="text-xl md:text-2xl font-bold text-red-600">{{ $stats['urgent'] }}</p>
             </div>
         </div>
 
         <!-- Orders Table -->
-        <div class="bg-white overflow-hidden shadow-md rounded-lg">
+        <div class="bg-white overflow-x-auto shadow-md rounded-lg">
             @if($orders->count() > 0)
-                <table class="w-full divide-y divide-gray-200">
+                <table class="w-full min-w-[600px] divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Customer</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Items</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Total</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Route</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Urgent</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase">Actions</th>
+                            <th class="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-700 uppercase">Order #</th>
+                            <th class="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-700 uppercase">Customer</th>
+                            <th class="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-700 uppercase">Items</th>
+                            <th class="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-700 uppercase">Total</th>
+                            <th class="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-700 uppercase">Route</th>
+                            <th class="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-700 uppercase">Status</th>
+                            <th class="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-700 uppercase">Urgent</th>
+                            <th class="px-2 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-700 uppercase">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         @foreach($orders as $order)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4">
-                                    <a href="{{ route('orders.show', $order) }}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                                <td class="px-2 md:px-6 py-2 md:py-4">
+                                    <a href="{{ route('orders.show', $order) }}" class="text-blue-600 hover:text-blue-800 font-semibold text-xs md:text-base">
                                         {{ $order->order_number }}
                                     </a>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-900">{{ $order->customer->name }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-600">{{ $order->items->count() }} items</td>
-                                <td class="px-6 py-4 text-sm font-semibold text-gray-900">
+                                <td class="px-2 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-900">{{ $order->customer->name }}</td>
+                                <td class="px-2 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-600">{{ $order->items->count() }} items</td>
+                                <td class="px-2 md:px-6 py-2 md:py-4 text-xs md:text-sm font-semibold text-gray-900">
                                     LKR {{ number_format($order->order_total ?? 0, 2) }}
                                 </td>
-                                <td class="px-6 py-4 text-sm text-gray-600">
+                                <td class="px-2 md:px-6 py-2 md:py-4 text-xs md:text-sm text-gray-600">
                                     {{ $order->deliveryRoute?->route_name ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4">
-                                    <span class="px-3 py-1 rounded-full text-xs font-medium
+                                <td class="px-2 md:px-6 py-2 md:py-4">
+                                    <span class="px-2 md:px-3 py-1 rounded-full text-xs font-medium
                                         {{ $order->status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
                                         {{ $order->status === 'Loaded' ? 'bg-purple-100 text-purple-800' : '' }}
                                         {{ $order->status === 'Delivered' ? 'bg-orange-100 text-orange-800' : '' }}
@@ -95,14 +95,14 @@
                                         {{ $order->status }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-2 md:px-6 py-2 md:py-4">
                                     @if($order->is_urgent)
                                         <span class="px-2 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">⚠️ URGENT</span>
                                     @else
                                         <span class="text-xs text-gray-500">-</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-sm space-x-2">
+                                <td class="px-2 md:px-6 py-2 md:py-4 text-xs md:text-sm space-x-2">
                                     <a href="{{ route('orders.show', $order) }}" class="text-blue-600 hover:text-blue-800">View</a>
                                     @if($order->canTransitionTo('Loaded'))
                                         <form action="{{ route('orders.status', [$order, 'Loaded']) }}" method="POST" style="display:inline;">
@@ -140,9 +140,7 @@
                     {{ $orders->links() }}
                 </div>
             @else
-                <div class="text-center py-12">
-                    <p class="text-gray-500 text-lg">No orders found. Create your first order.</p>
-                </div>
+                <div class="p-6 text-center text-gray-500">No orders found.</div>
             @endif
         </div>
     </div>

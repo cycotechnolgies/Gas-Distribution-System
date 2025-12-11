@@ -53,13 +53,13 @@ function poForm(rates) {
 <div x-data="poForm({{ $rates->toJson() }})" x-init="init()" class="space-y-8">
 
     <!-- Header -->
-    <div class="flex justify-between items-center">
+    <div class="flex flex-col md:flex-row justify-between items-start gap-3 md:gap-0">
         <div>
-            <h1 class="text-4xl font-bold">Purchase Orders</h1>
-            <p class="text-gray-600 mt-2">Manage gas refill purchase orders</p>
+            <h1 class="text-2xl md:text-4xl font-bold">Purchase Orders</h1>
+            <p class="text-gray-600 text-xs md:text-base mt-2">Manage gas refill purchase orders</p>
         </div>
         <button @click="openModal=true; items=[]"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-lg font-semibold flex items-center gap-2">
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl shadow-lg font-semibold flex items-center gap-2 text-sm md:text-base">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             Create PO
         </button>
@@ -79,44 +79,44 @@ function poForm(rates) {
 
     <!-- Table -->
     <div class="bg-white rounded-xl shadow overflow-x-auto">
-        <table class="w-full text-left">
+        <table class="w-full min-w-[600px] text-left text-xs md:text-base">
             <thead class="bg-gray-100 border-b">
                 <tr>
-                    <th class="p-4 font-semibold">PO No</th>
-                    <th class="p-4 font-semibold">Supplier</th>
-                    <th class="p-4 font-semibold">Order Date</th>
-                    <th class="p-4 font-semibold">Delivery Date</th>
-                    <th class="p-4 font-semibold">Items</th>
-                    <th class="p-4 font-semibold">Total</th>
-                    <th class="p-4 font-semibold">Status</th>
-                    <th class="p-4 font-semibold">Actions</th>
+                    <th class="p-2 md:p-4 font-semibold">PO No</th>
+                    <th class="p-2 md:p-4 font-semibold">Supplier</th>
+                    <th class="p-2 md:p-4 font-semibold">Order Date</th>
+                    <th class="p-2 md:p-4 font-semibold">Delivery Date</th>
+                    <th class="p-2 md:p-4 font-semibold">Items</th>
+                    <th class="p-2 md:p-4 font-semibold">Total</th>
+                    <th class="p-2 md:p-4 font-semibold">Status</th>
+                    <th class="p-2 md:p-4 font-semibold">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y">
                 @forelse($orders as $o)
                 <tr class="hover:bg-gray-50">
-                    <td class="p-4 font-semibold text-blue-600">{{ $o->po_number }}</td>
-                    <td class="p-4">{{ $o->supplier->name }}</td>
-                    <td class="p-4">{{ $o->order_date->format('d M Y') }}</td>
-                    <td class="p-4">
+                    <td class="p-2 md:p-4 font-semibold text-blue-600">{{ $o->po_number }}</td>
+                    <td class="p-2 md:p-4">{{ $o->supplier->name }}</td>
+                    <td class="p-2 md:p-4">{{ $o->order_date->format('d M Y') }}</td>
+                    <td class="p-2 md:p-4">
                         {{ $o->delivery_date ? $o->delivery_date->format('d M Y') : '-' }}
                     </td>
-                    <td class="p-4">{{ $o->items->count() }} item(s)</td>
-                    <td class="p-4 font-bold">Rs. {{ number_format($o->total_amount, 2) }}</td>
-                    <td class="p-4">
-                        <span class="px-3 py-1 rounded-full text-xs font-semibold
+                    <td class="p-2 md:p-4">{{ $o->items->count() }} item(s)</td>
+                    <td class="p-2 md:p-4 font-bold">Rs. {{ number_format($o->total_amount, 2) }}</td>
+                    <td class="p-2 md:p-4">
+                        <span class="px-2 md:px-3 py-1 rounded-full text-xs font-semibold
                             {{ $o->status == 'Approved' ? 'bg-green-100 text-green-700' : '' }}
                             {{ $o->status == 'Pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
                             {{ $o->status == 'Completed' ? 'bg-blue-100 text-blue-700' : '' }}">
                             {{ $o->status }}
                         </span>
                     </td>
-                    <td class="p-4 flex gap-2">
+                    <td class="p-2 md:p-4 flex gap-2">
                         <form method="POST" action="{{ route('purchase-orders.status', [$o->id, 'Approved']) }}" class="inline">
                             @csrf
                             <button type="submit" 
                                 {{ $o->status != 'Pending' ? 'disabled' : '' }}
-                                class="bg-green-100 text-green-700 px-3 py-1 rounded text-sm hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                                class="bg-green-100 text-green-700 px-2 md:px-3 py-1 rounded text-xs md:text-sm hover:bg-green-200 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Approve
                             </button>
                         </form>
