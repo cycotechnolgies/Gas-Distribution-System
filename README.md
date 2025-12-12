@@ -300,4 +300,4 @@ The Gas Distribution System is licensed under the MIT license. See LICENSE file 
 
 ## Support
 
-For issues or questions, please refer to the Laravel documentation at [laravel.com/docs](https://laravel.com/docs).
+For issues or questions, please contact me [cycotechnologies@gmail.com]
