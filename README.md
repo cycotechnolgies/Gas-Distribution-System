@@ -286,6 +286,13 @@ Key database models include:
 - **GasType**: Different gas products offered
 - **Vehicle**: Delivery vehicles
 
+## Screenshots
+
+<img width="1364" height="610" alt="image" src="https://github.com/user-attachments/assets/608a1949-94ec-428e-ba72-17798f5313c5" />
+<img width="1347" height="604" alt="image" src="https://github.com/user-attachments/assets/08ad903a-9c86-4bf9-a5ff-6e293331bc2b" />
+<img width="1329" height="610" alt="image" src="https://github.com/user-attachments/assets/8b95844b-af14-4fb4-ac51-b76a8c2d18ed" />
+<img width="1325" height="599" alt="image" src="https://github.com/user-attachments/assets/c5e51825-3ee0-4c2b-9d7b-dd44fdf3c99b" />
+
 ## Contributing
 
 1. Create a feature branch
