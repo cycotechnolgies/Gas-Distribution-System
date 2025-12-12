@@ -4,7 +4,7 @@
 <h1 class="text-4xl font-bold mb-6">Stock</h1>
 
 <table class="w-full bg-white shadow rounded-xl text-xs md:text-base">
-    <thead class="bg-gray-100">
+    <thead class="">
         <tr>
             <th class="p-2 md:p-4 text-left">Gas Type</th>
             <th class="p-2 md:p-4 text-left">Full Cylinders</th>

@@ -29,9 +29,20 @@ class PurchaseOrderController extends Controller
         return view('purchase-orders.index', compact('orders', 'suppliers', 'gasTypes', 'rates'));
     }
 
+    public function show(PurchaseOrder $purchaseOrder)
+    {
+        $purchaseOrder->load('supplier', 'items.gasType', 'grns');
+        return view('purchase-orders.show', compact('purchaseOrder'));
+    }
+
+    /**
+     * Generate unique PO number
+     */
     private function generatePONumber()
     {
-        return 'PO-' . str_pad(PurchaseOrder::count() + 1, 5, '0', STR_PAD_LEFT);
+        $latestPO = PurchaseOrder::latest('id')->first();
+        $nextNum = ($latestPO ? intval(substr($latestPO->po_number, 3)) : 0) + 1;
+        return 'PO-' . str_pad($nextNum, 6, '0', STR_PAD_LEFT);
     }
 
     public function store(Request $request)

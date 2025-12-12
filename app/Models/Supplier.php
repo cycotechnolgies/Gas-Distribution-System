@@ -28,6 +28,11 @@ class Supplier extends Model
         return $this->hasMany(PurchaseOrder::class);
     }
 
+    public function grns()
+    {
+        return $this->hasMany(Grn::class);
+    }
+
     public function payments()
     {
         return $this->hasMany(SupplierPayment::class);

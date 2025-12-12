@@ -30,6 +30,12 @@ class GrnController extends Controller
         return view('grns.index', compact('grns','suppliers','purchaseOrders'));
     }
 
+    public function show(Grn $grn)
+    {
+        $grn->load('supplier', 'purchaseOrder.items.gasType', 'items.gasType');
+        return view('grns.show', compact('grn'));
+    }
+
     public function getPoItems(PurchaseOrder $po)
     {
         $po->load('items.gasType');
@@ -261,6 +267,7 @@ class GrnController extends Controller
         });
 
         return response()->json([
+            'id' => $po->id,
             'po_number' => $po->po_number,
             'po_date' => $po->order_date->format('Y-m-d'),
             'supplier_id' => $po->supplier_id,

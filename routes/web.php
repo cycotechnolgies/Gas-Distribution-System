@@ -46,16 +46,14 @@ Route::post('/api/get-supplier-rate', [GasTypeController::class, 'getSupplierRat
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('purchase-orders', PurchaseOrderController::class)->except(['create','edit','show']);
+    Route::resource('purchase-orders', PurchaseOrderController::class)->except(['create','edit']);
     Route::post('/purchase-orders/{po}/status/{status}', [PurchaseOrderController::class, 'updateStatus'])
         ->name('purchase-orders.status');
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('grns', [GrnController::class,'index'])->name('grns.index');
+    Route::resource('grns', GrnController::class)->only(['index', 'show', 'destroy']);
     Route::post('grns', [GrnController::class,'store'])->name('grns.store');
-    Route::delete('grns/{grn}', [GrnController::class,'destroy'])->name('grns.destroy');
-
     Route::post('grns/{grn}/approve', [GrnController::class,'approve'])->name('grns.approve');
 
     Route::get('api/po-items/{po}', [GrnController::class,'getPoItems']);
