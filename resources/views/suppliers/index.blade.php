@@ -36,7 +36,7 @@
     @if($suppliers->count() > 0)
 
         <!-- Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-5">
             @foreach($suppliers as $s)
             <div class="group bg-white rounded-xl shadow-sm hover:shadow-xl border border-gray-200 hover:border-blue-300 transition-all duration-300 overflow-hidden"
                  x-data="{supplierData: {id: {{ $s->id }}, name: '{{ addslashes($s->name) }}', address: '{{ addslashes($s->address ?? '') }}', phone: '{{ addslashes($s->phone ?? '') }}', email: '{{ addslashes($s->email ?? '') }}'}}">
@@ -52,17 +52,17 @@
                     </div>
                 </div>
 
-                <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex gap-2">
+                <div class="px-4 md:px-6 py-3 md:py-4 bg-gray-50 border-t border-gray-100 flex gap-2">
                     <!-- View Button -->
                     <a href="{{ route('suppliers.show', $s->id) }}"
-                       class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 font-medium text-sm"
+                       class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 px-2 md:px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 font-medium text-xs md:text-sm"
                        title="View supplier details">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                     </a>
                     
                     <!-- Edit Button -->
                     <button @click="supplier = supplierData; openModal=true"
-                            class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-600 hover:text-amber-700 px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 font-medium text-sm"
+                            class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-600 hover:text-amber-700 px-2 md:px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 font-medium text-xs md:text-sm"
                             title="Edit supplier">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                     </button>
@@ -72,7 +72,7 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit"
-                                class="w-full bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 font-medium text-sm"
+                                class="w-full bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 px-2 md:px-3 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 font-medium text-xs md:text-sm"
                                 title="Delete supplier"
                                 onclick="return confirm('Are you sure you want to delete this supplier? This action cannot be undone.')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
@@ -108,12 +108,12 @@
     @endif
 
     <!-- Modal -->
-    <div x-show="openModal" @keydown.escape="openModal=false" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" style="display: none;">
-        <div @click.away="openModal=false" class="bg-white rounded-xl w-full max-w-2xl p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div x-show="openModal" @keydown.escape="openModal=false" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 md:p-4" style="display: none;">
+        <div @click.away="openModal=false" class="bg-white rounded-xl w-full max-w-xs md:max-w-2xl p-4 md:p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
             <!-- Modal Header -->
-            <div class="mb-6 sticky top-0 bg-white">
-                <h2 class="text-3xl font-bold text-gray-900" x-text="supplier.id ? 'Edit Supplier' : 'Add New Supplier'"></h2>
-                <p class="text-gray-600 text-sm mt-2" x-text="supplier.id ? 'Update supplier information' : 'Create a new supplier in your system'"></p>
+            <div class="mb-4 md:mb-6 sticky top-0 bg-white">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900" x-text="supplier.id ? 'Edit Supplier' : 'Add New Supplier'"></h2>
+                <p class="text-gray-600 text-xs md:text-sm mt-2" x-text="supplier.id ? 'Update supplier information' : 'Create a new supplier in your system'"></p>
             </div>
 
             <form :action="supplier.id ? '/suppliers/' + supplier.id : '/suppliers'" method="POST">

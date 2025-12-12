@@ -38,6 +38,21 @@ class SupplierController extends Controller
         return view('suppliers.edit', compact('supplier'));
     }
 
+    public function show(Supplier $supplier)
+    {
+        $purchaseOrders = $supplier->purchaseOrders()
+            ->with('items')
+            ->latest()
+            ->get();
+        
+        $grns = $supplier->grns()
+            ->with('items', 'purchaseOrder')
+            ->latest()
+            ->get();
+
+        return view('suppliers.show', compact('supplier', 'purchaseOrders', 'grns'));
+    }
+
     public function update(Request $request, Supplier $supplier)
     {
         $request->validate([

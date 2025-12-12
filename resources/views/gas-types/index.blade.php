@@ -32,22 +32,27 @@
     <!-- Grid Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         @foreach($gasTypes as $g)
-        <div class="bg-white border rounded-xl shadow-sm p-6 relative"
+        <div class="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 relative group"
              x-data="{ gasData: {id: {{ $g->id }}, name: '{{ $g->name }}', price: '{{ $g->price }}'} }">
 
-            <h3 class="text-xl font-bold text-gray-900">{{ $g->name }}</h3>
-            
-            <div class="flex gap-2 mt-5">
+            <!-- Header Section -->
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{{ $g->name }}</h3>
+                <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full">Gas Type</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2 pt-4 border-t border-gray-200">
                 <button 
                     @click="window.location.href = '/gas-types/{{ $g->id }}'"
-                    class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-700 py-2 rounded-lg">
-                    view
+                    class="flex-1 flex justify-center bg-blue-50 hover:bg-blue-500 text-blue-700 hover:text-white py-2.5 rounded-lg font-medium transition-all duration-200 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
                 </button>
 
                 <button 
                     @click="gas = gasData; openModal = true"
-                    class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-700 py-2 rounded-lg">
-                    Edit
+                    class="flex-1 flex justify-center bg-amber-50 hover:bg-amber-500 text-amber-700 hover:text-white py-2.5 rounded-lg font-medium transition-all duration-200 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen-icon lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
                 </button>
 
                 <form method="POST" action="{{ route('gas-types.destroy',$g->id) }}" class="flex-1">
@@ -55,8 +60,8 @@
                     @method('DELETE')
                     <button type="submit"
                             onclick="return confirm('Delete this gas type?')"
-                            class="w-full bg-red-50 hover:bg-red-100 text-red-700 py-2 rounded-lg">
-                        Delete
+                            class="w-full flex justify-center bg-red-50 hover:bg-red-500 text-red-700 hover:text-white py-2.5 rounded-lg font-medium transition-all duration-200 text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                     </button>
                 </form>
             </div>

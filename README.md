@@ -1,59 +1,303 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Gas Distribution System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive web application for managing gas distribution operations, built with Laravel 12 and modern web technologies. This system handles customer management, delivery routes, inventory tracking, order processing, and supplier management.
 
-## About Laravel
+## Project Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The Gas Distribution System is designed to streamline and optimize gas distribution operations. It provides features for:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Customer Management**: Track customer profiles, pricing tiers, and cylinder allocations
+- **Inventory Management**: Monitor gas stock levels, manage refills, and track GRNs (Goods Received Notes)
+- **Order Processing**: Create and manage customer orders with detailed item tracking
+- **Route Management**: Plan and optimize delivery routes with route stops
+- **Supplier Management**: Handle supplier information, purchase orders, and payment tracking
+- **Vehicle & Driver Management**: Track delivery vehicles and assigned drivers
+- **User Management**: Role-based access control and user administration
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technology Stack
 
-## Learning Laravel
+- **Framework**: Laravel 12
+- **Frontend**: Blade Templates, Tailwind CSS, Alpine.js
+- **Build Tool**: Vite
+- **Database**: MySQL/MariaDB
+- **PHP Version**: 8.2+
+- **Package Manager**: Composer, NPM
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Project Structure
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+Gas-Distribution-System/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/        # Request handlers and application logic
+│   │   └── Requests/           # Form request validation classes
+│   ├── Models/                 # Eloquent ORM models
+│   │   ├── Customer.php
+│   │   ├── Order.php
+│   │   ├── DeliveryRoute.php
+│   │   ├── Driver.php
+│   │   ├── GasType.php
+│   │   ├── Supplier.php
+│   │   ├── Stock.php
+│   │   ├── Refill.php
+│   │   └── ...
+│   ├── Providers/              # Service providers
+│   └── View/
+│       └── Components/         # Reusable Blade components
+├── bootstrap/
+│   ├── app.php                 # Application bootstrap
+│   └── cache/
+├── config/
+│   ├── app.php                 # Application configuration
+│   ├── database.php            # Database connection settings
+│   ├── auth.php                # Authentication configuration
+│   ├── cache.php               # Cache configuration
+│   ├── mail.php                # Mail configuration
+│   └── ...
+├── database/
+│   ├── migrations/             # Database schema migrations
+│   ├── factories/              # Model factories for testing
+│   ├── seeders/                # Database seeding classes
+├── public/
+│   ├── index.php               # Application entry point
+│   ├── build/                  # Compiled assets
+│   └── images/                 # Public images
+├── resources/
+│   ├── css/                    # Tailwind CSS files
+│   ├── js/                     # JavaScript files
+│   └── views/                  # Blade template files
+│       ├── layouts/            # Layout templates
+│       ├── components/         # Reusable view components
+│       ├── customers/          # Customer-related views
+│       ├── orders/             # Order-related views
+│       └── ...
+├── routes/
+│   ├── web.php                 # Web application routes
+│   ├── auth.php                # Authentication routes
+│   └── console.php             # Console commands
+├── storage/
+│   ├── app/                    # Application file storage
+│   ├── logs/                   # Application logs
+│   └── framework/              # Framework files
+├── tests/
+│   ├── Feature/                # Feature tests
+│   ├── Unit/                   # Unit tests
+│   └── TestCase.php            # Test base class
+├── composer.json               # PHP dependencies
+├── package.json                # Node.js dependencies
+├── vite.config.js              # Vite build configuration
+├── tailwind.config.js          # Tailwind CSS configuration
+├── phpunit.xml                 # PHPUnit configuration
+└── artisan                     # Laravel CLI tool
+```
 
-## Laravel Sponsors
+## Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prerequisites
 
-### Premium Partners
+- PHP 8.2 or higher
+- Composer
+- Node.js and NPM
+- MySQL/MariaDB database
+- XAMPP (or similar local development environment)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Step-by-Step Installation
+
+1. **Clone or Navigate to the Project**
+   ```bash
+   cd c:\xampp\htdocs\Gas-Distribution-System
+   ```
+
+2. **Install PHP Dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Install Node.js Dependencies**
+   ```bash
+   npm install
+   ```
+
+4. **Create Environment Configuration**
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` file with your database credentials:
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=gas_distribution
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+
+5. **Generate Application Key**
+   ```bash
+   php artisan key:generate
+   ```
+
+6. **Create Database**
+   
+   Create a new MySQL database named `gas_distribution`:
+   ```bash
+   mysql -u root -p -e "CREATE DATABASE gas_distribution;"
+   ```
+
+7. **Run Database Migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+8. **Seed the Database (Optional)**
+   ```bash
+   php artisan db:seed
+   ```
+
+9. **Build Frontend Assets**
+   ```bash
+   npm run build
+   ```
+   
+   Or for development with hot reload:
+   ```bash
+   npm run dev
+   ```
+
+10. **Start the Development Server**
+    ```bash
+    php artisan serve
+    ```
+    
+    The application will be available at `http://127.0.0.1:8000`
+
+## Configuration
+
+### Key Environment Variables
+
+- `APP_NAME`: Application name
+- `APP_ENV`: Environment (local, production, testing)
+- `APP_DEBUG`: Enable/disable debug mode
+- `APP_URL`: Application URL
+- `DB_*`: Database connection details
+- `MAIL_*`: Mail configuration
+
+### Database
+
+All migrations are located in `database/migrations/`. Run `php artisan migrate` to execute all pending migrations.
+
+### Front-end
+
+- **CSS Framework**: Tailwind CSS configured in `tailwind.config.js`
+- **Build Tool**: Vite configured in `vite.config.js`
+- **JavaScript Framework**: Alpine.js for interactive components
+
+## Running Tests
+
+```bash
+# Run all tests
+php artisan test
+
+# Run specific test file
+php artisan test tests/Feature/ExampleTest.php
+
+# Run with coverage
+php artisan test --coverage
+```
+
+## Available Artisan Commands
+
+```bash
+# Database
+php artisan migrate              # Run pending migrations
+php artisan migrate:fresh        # Reset database and re-run migrations
+php artisan db:seed              # Seed the database
+php artisan tinker               # Interactive shell
+
+# Cache
+php artisan cache:clear          # Clear application cache
+php artisan config:cache         # Cache configuration
+
+# Queue
+php artisan queue:work           # Start processing queued jobs
+
+# Generate
+php artisan make:migration        # Create a new migration
+php artisan make:model           # Create a new model
+php artisan make:controller      # Create a new controller
+```
+
+## Development Workflow
+
+### Frontend Development
+
+```bash
+# Watch for CSS/JS changes and rebuild automatically
+npm run dev
+```
+
+In another terminal, run the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+### Database Changes
+
+1. Create a new migration:
+   ```bash
+   php artisan make:migration create_table_name
+   ```
+
+2. Edit the migration file in `database/migrations/`
+
+3. Run the migration:
+   ```bash
+   php artisan migrate
+   ```
+
+## Common Issues
+
+### Database Connection Error
+- Ensure MySQL is running
+- Verify database credentials in `.env`
+- Check database exists: `mysql -u root -e "SHOW DATABASES;"`
+
+### npm Dependencies Not Found
+- Run `npm install` again
+- Delete `node_modules` and `package-lock.json`, then reinstall
+
+### PHP Version Mismatch
+- Verify PHP version: `php -v`
+- Ensure PHP 8.2 or higher is installed
+
+## Project Models
+
+Key database models include:
+
+- **Customer**: Gas customers with pricing tiers
+- **Order/OrderItem**: Customer orders and line items
+- **DeliveryRoute**: Delivery routes with multiple stops
+- **Driver**: Delivery drivers assigned to routes
+- **Supplier**: Gas suppliers
+- **PurchaseOrder**: Orders placed with suppliers
+- **Stock**: Current gas inventory levels
+- **GasType**: Different gas products offered
+- **Vehicle**: Delivery vehicles
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Create a feature branch
+2. Make your changes
+3. Write or update tests
+4. Commit with descriptive messages
+5. Push to the repository
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Gas Distribution System is licensed under the MIT license. See LICENSE file for details.
+
+## Support
+
+For issues or questions, please refer to the Laravel documentation at [laravel.com/docs](https://laravel.com/docs).
