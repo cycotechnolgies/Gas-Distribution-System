@@ -23,6 +23,12 @@ The Gas Distribution System is designed to streamline and optimize gas distribut
 - **PHP Version**: 8.2+
 - **Package Manager**: Composer, NPM
 
+## Authantications
+
+- Role - admin
+- email - admin@gas.com
+- password - admin@1234
+
 ## Project Structure
 
 ```
